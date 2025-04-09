@@ -2,7 +2,7 @@
 from setuptools import setup
 
 setup(
-    name='demo',
+    name='live-heart-rate-app',
     version='0.0',
     install_requires=[
         "kafka-python-ng==2.2.2",

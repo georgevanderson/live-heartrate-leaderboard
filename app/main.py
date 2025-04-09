@@ -5,6 +5,47 @@ from app.ingest import models, transforms
 import app.apis.bar as bar_api
 import app.views.bar_aggregated as bar_view
 
+from app.data_models.raw_ant_hr_packet import raw_ant_hr_packet
+from moose_lib import IngestPipeline, IngestPipelineConfig
+from app.data_models.unified_hr_model import UNIFIED_HR_MODEL
+from app.data_models.processed_ant_hr_packet import PROCESSED_ANT_HR_PACKET
+from moose_lib import StreamingFunction
+from app.functions.raw_to_processed_ant_hr_packet import RawAntHRPacket__ProcessedAntHRPacket
+from app.functions.processed_to_unified import processedAntHRPacket__UNIFIED_HR_PACKET
+from app.datamodels.UnifiedHRPacket import UNIFIED_HR_PACKET
+from app.functions.aggregated_per_second import aggregateHeartRateSummaryPerSecondMV
+# Initalize Ingest Pipeline Infrastructure
+rawAntHRPacketModel = IngestPipeline[raw_ant_hr_packet]("raw_ant_hr_packet", IngestPipelineConfig(
+    ingest=True,
+    stream=True,
+    table=True
+))
 
+unifiedHRModel = IngestPipeline[UNIFIED_HR_MODEL]("unified_hr_model", IngestPipelineConfig(
+    ingest=True,
+    stream=True,
+    table=True
+))
 
+processedAntHRPacketModel = IngestPipeline[PROCESSED_ANT_HR_PACKET]("processed_ant_hr_packet", IngestPipelineConfig(
+    ingest=True,
+    stream=True,
+    table=True
+))
 
+unifiedHRPacketModel = IngestPipeline[UNIFIED_HR_PACKET]("unified_hr_packet", IngestPipelineConfig(
+    ingest=True,
+    stream=True,
+    table=True
+))
+
+# Transform RawAntHRPacket to ProcessedAntHRPacket in stream
+rawAntHRPacketModel.get_stream().add_transform(
+    destination=processedAntHRPacketModel.get_stream(),
+    transformation=RawAntHRPacket__ProcessedAntHRPacket
+)
+
+processedAntHRPacketModel.get_stream().add_transform(
+    destination=unifiedHRPacketModel.get_stream(),
+    transformation=processedAntHRPacket__UNIFIED_HR_PACKET
+)
