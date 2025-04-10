@@ -1,5 +1,5 @@
 from app.datamodels.ProcessedAntHRPacket import ProcessedAntHRPacket
-from app.datamodels.UnifiedHRPacket import UNIFIED_HR_PACKET
+from app.datamodels.UnifiedHRPacket import UnifiedHRPacket
 from moose_lib import StreamingFunction, Logger
 from typing import Optional
 from datetime import datetime, timezone
@@ -20,12 +20,12 @@ def load_device_dict():
 
 device_dict = load_device_dict()
 
-def processedAntHRPacket__UNIFIED_HR_PACKET(source: ProcessedAntHRPacket) -> UNIFIED_HR_PACKET:
+def processedAntHRPacket__UNIFIED_HR_PACKET(source: ProcessedAntHRPacket) -> UnifiedHRPacket:
     device_id = str(source.device_id)
     user_id = device_dict[device_id]['user_id']
     user_name = device_dict[device_id]['user_name']
 
-    return UNIFIED_HR_PACKET(
+    return UnifiedHRPacket(
         user_id=user_id,
         user_name=user_name,
         device_id=source.device_id,

@@ -1,5 +1,5 @@
-from app.data_models.raw_ant_hr_packet import raw_ant_hr_packet
-from app.data_models.processed_ant_hr_packet import PROCESSED_ANT_HR_PACKET
+from app.datamodels.RawAntHRPacket import RawAntHRPacket
+from app.datamodels.ProcessedAntHRPacket import ProcessedAntHRPacket
 from moose_lib import StreamingFunction
 from typing import Optional
 from datetime import datetime
@@ -9,7 +9,7 @@ from datetime import datetime
 # This is used to handle byte rollovers
 device_dict = {}
  
-def RawAntHRPacket__ProcessedAntHRPacket(source: raw_ant_hr_packet) -> Optional[PROCESSED_ANT_HR_PACKET]:
+def RawAntHRPacket__ProcessedAntHRPacket(source: RawAntHRPacket) -> Optional[ProcessedAntHRPacket]:
     # Track the number of times the time byte has been incremented
     # 2 Bytes ==> 16 bits ==> 65536 values of 1/1024 seconds ==> 64 seconds
     if source.device_id not in device_dict:
@@ -29,10 +29,10 @@ def RawAntHRPacket__ProcessedAntHRPacket(source: raw_ant_hr_packet) -> Optional[
     if heart_beat_count > 256:
         device_dict[source.device_id]['heart_beat_rollover'] += 1
 
-    return PROCESSED_ANT_HR_PACKET(
+    return ProcessedAntHRPacket(
         device_id=source.device_id,
         previous_beat_time=previous_beat_time_seconds,
         last_beat_time=last_beat_time_seconds,
-        heart_beat_count = heart_beat_count,
-        calculated_heart_rate=calculated_heart_rate, 
+        heart_beat_count=heart_beat_count,
+        calculated_heart_rate=calculated_heart_rate,
     ) 
