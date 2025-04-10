@@ -2,7 +2,7 @@ from moose_lib import Key
 from pydantic import BaseModel
 from datetime import datetime
 
-class UNIFIED_HR_PACKET(BaseModel):
+class UnifiedHRPacket(BaseModel):
     user_id: Key[int]
     user_name: str
     device_id: int

@@ -44,14 +44,14 @@ SELECT_QUERY = """
             processed_timestamp,
             avgState(hr_value) as avg_hr_per_second
         FROM
-            UNIFIED_HR_MODEL
+            unified_hr_packet
         GROUP BY user_name, rounded_up_time, processed_timestamp
 """
 
 aggregateHeartRateSummaryPerSecondMV = MaterializedView[AggregateHeartRateSummaryPerSecond](MaterializedViewOptions(
     select_statement=SELECT_QUERY,
-    table_name="heart_rate_summary",
-    materialized_view_name="heart_rate_view",
+    table_name="per_second_heart_rate_aggregate",
+    materialized_view_name="per_second_heart_rate_aggregate_view",
     order_by_fields=["user_name", "rounded_up_time"],
     engine=ClickHouseEngines.AggregatingMergeTree,
 ))
