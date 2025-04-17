@@ -5,7 +5,8 @@ Ensure you have followed the instructions adding moose to your path or start a n
 
 2. Create a python virtual environment
 ```python3 -m venv .venv
-source .venv/bin/activate```
+source .venv/bin/activate
+```
 
 3 Install dependencies
 ```pip install -r requirements.txt```
