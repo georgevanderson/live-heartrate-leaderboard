@@ -1,1 +1,7 @@
-Create an egress API that shows each users heart rate variability and add it to the leaderboard table in the frontend
+Tell me about my moose project and the data I have in my database
+
+Find me the distribution of heart rate zones by user
+
+create an api to furnish this data
+
+@streamlit_app.py wire up that api with this frontend
